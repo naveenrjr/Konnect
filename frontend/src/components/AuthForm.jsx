@@ -164,12 +164,12 @@ function LoginForm() {
     email: "",
     password: "",
   });
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     login(formData);
   };
   return (
-    <form>
+    <form onSubmit={handleLogin}>
       <div className="form-control">
         <label className="label">
           <span className="label-text font-medium">Email:</span>

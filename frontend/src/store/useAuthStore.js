@@ -11,7 +11,7 @@ export const useAuthStore = create((set) => ({
 
   checkAuth: async () => {
     try {
-      const res = axiosInstance.get("/auth/check");
+      const res = await axiosInstance.get("/auth/check");
       set({ authUser: res.data });
     } catch (error) {
       console.log("error in checking Auth", error);
@@ -32,6 +32,7 @@ export const useAuthStore = create((set) => ({
     }
   },
   login: async (data) => {
+    // console.log("in here");
     set({ isLogginIn: true });
     try {
       const res = await axiosInstance.post("/auth/login", data);
@@ -39,6 +40,7 @@ export const useAuthStore = create((set) => ({
       toast.success("Logged in successfully");
     } catch (error) {
       console.log("error in login handler", error);
+      toast.error(error.response.data.message);
     } finally {
       set({ isLogginIn: false });
     }
@@ -50,6 +52,19 @@ export const useAuthStore = create((set) => ({
       toast.success("Logged out successfully");
     } catch (error) {
       console.log("error in logout handler", error);
+    }
+  },
+  updateProfile: async (data) => {
+    set({ isUpdatingProfile: true });
+    try {
+      const res = await axiosInstance.put("/auth/update-profile", data);
+      set({ authUser: res.data });
+      toast.success("Profile picture updated successfully");
+    } catch (error) {
+      console.log("Error in updating avatar", error);
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isUpdatingProfile: false });
     }
   },
 }));
